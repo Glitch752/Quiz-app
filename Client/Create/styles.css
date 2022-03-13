@@ -1,0 +1,94 @@
+:root {
+    --background-color: #b6ebd2;
+    --content-background: #ececec;
+    --content-drop-shadow: #2c2c2c;
+    --content-drop-shadow-fade: #00000088;
+    --content-margin: 5rem;
+
+    --title-color: #f0f0f0;
+    --title-drop-shadow: #2c2c2c;
+    --title-drop-shadow-fade: #00000088;
+
+    --small-font-size: 1rem;
+    --font-size: 1.5rem;
+    --large-font-size: 2rem;
+
+    --background-color-hover: #e0e0e0;
+    --background-color-selected: #bdbdbd;
+
+    --text-color-primary: #000000;
+    --text-color-secondary: #444444;
+}
+
+body {
+    background-color: var(--background-color);
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.options-left {
+    width: calc(20vw - var(--content-margin));
+    height: calc(100vh - var(--content-margin) * 2);
+    margin: var(--content-margin);
+    overflow: hidden;
+}
+.option {
+    padding: 0.5rem 1rem;
+    font-size: var(--font-size);
+    color: var(--text-color-primary);
+    width: 100%;
+    display: inline-block;
+    text-decoration: none;
+}
+.option:hover {
+    background-color: var(--background-color-hover);
+}
+.option.selected {
+    background-color: var(--background-color-selected);
+}
+
+.content-right {
+    width: calc(80vw - var(--content-margin) * 2);
+    height: calc(100vh - var(--content-margin) * 2);
+    margin: var(--content-margin);
+    margin-left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-pane {
+    background-color: var(--content-background);
+    border-radius: 1rem;
+    box-shadow: 
+        0.2rem 0.2rem var(--content-drop-shadow),
+        0.5rem 0.5rem 1rem var(--content-drop-shadow-fade);
+}
+
+.title {
+    font-size: 3rem;
+    font-weight: bold;
+    background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    position: absolute;
+    top: 0.5rem;
+}
+.title::after {
+    content: 'QUIZZES';
+    text-shadow: 
+        0.2rem 0.2rem var(--title-drop-shadow),
+        0.5rem 0.5rem 1rem var(--title-drop-shadow-fade);
+    position: absolute;
+    left: 0;
+    z-index: -1;
+}

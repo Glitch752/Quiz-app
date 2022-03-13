@@ -4,7 +4,4 @@ var wsc = new WebSocket((window.location.protocol === 'https:' ? 'wss://' : 'ws:
 
 wsc.onopen = function() {
     console.log("Connected to server!");
-    wsc.send(JSON.stringify({
-        type: 'getQuizzes',
-    }));
 }
