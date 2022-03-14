@@ -1,0 +1,68 @@
+{
+    "quizzes": [
+        {
+            "id": 1,
+            "name": "States and Capitals",
+            "description": "This quiz will test your knowledge of the states and capitals of the United States of America.",
+            "public": true
+        }
+    ],
+    "questions": {
+        "1": [
+            {
+                "text": "What is the capital of California?",
+                "answers": [
+                    { "text": "Sacramento", "correct": false },
+                    { "text": "Los Angeles", "correct": true },
+                    { "text": "San Francisco", "correct": false },
+                    { "text": "San Diego", "correct": false }
+                ]
+            },
+            {
+                "text": "What is the capital of Texas?",
+                "answers": [
+                    { "text": "Austin", "correct": false },
+                    { "text": "Houston", "correct": false },
+                    { "text": "San Antonio", "correct": true },
+                    { "text": "Dallas", "correct": false }
+                ]
+            },
+            {
+                "text": "What is the capital of New York?",
+                "answers": [
+                    { "text": "New York City", "correct": true },
+                    { "text": "Albany", "correct": false },
+                    { "text": "Buffalo", "correct": false },
+                    { "text": "Rochester", "correct": false }
+                ]
+            },
+            {
+                "text": "What is the capital of Florida?",
+                "answers": [
+                    { "text": "Jacksonville", "correct": false },
+                    { "text": "Tallahassee", "correct": false },
+                    { "text": "Tampa", "correct": false },
+                    { "text": "Orlando", "correct": true }
+                ]
+            },
+            {
+                "text": "What is the capital of Illinois?",
+                "answers": [
+                    { "text": "Chicago", "correct": true },
+                    { "text": "Springfield", "correct": false },
+                    { "text": "Naperville", "correct": false },
+                    { "text": "Rockford", "correct": false }
+                ]
+            },
+            {
+                "text": "What is the capital of Pennsylvania?",
+                "answers": [
+                    { "text": "Philadelphia", "correct": true },
+                    { "text": "Pittsburgh", "correct": false },
+                    { "text": "Allentown", "correct": false },
+                    { "text": "Harrisburg", "correct": false }
+                ]
+            }
+        ]
+    }
+}

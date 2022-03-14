@@ -1,0 +1,170 @@
+:root {
+    --background-color: #b6ebd2;
+    --content-background: #ececec;
+    --content-drop-shadow: #2c2c2c;
+    --content-drop-shadow-fade: #00000088;
+    --content-margin: 5rem;
+
+    --question-background: #f5f5f5;
+    --question-drop-shadow: #2c2c2c;
+    --question-drop-shadow-fade: #00000088;
+
+    --title-color: #f0f0f0;
+    --title-drop-shadow: #2c2c2c;
+    --title-drop-shadow-fade: #00000088;
+
+    --small-font-size: 1rem;
+    --font-size: 1.5rem;
+    --large-font-size: 2rem;
+
+    --background-color-hover: #e0e0e0;
+    --background-color-selected: #bdbdbd;
+
+    --text-color-primary: #000000;
+    --text-color-secondary: #444444;
+    --text-color-reversed: #ffffff;
+}
+
+body {
+    background-color: var(--background-color);
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.options-left {
+    width: calc(20vw - var(--content-margin));
+    height: calc(100vh - var(--content-margin) * 2);
+    margin: var(--content-margin);
+    overflow: hidden;
+}
+.option {
+    padding: 0.5rem 1rem;
+    font-size: var(--font-size);
+    color: var(--text-color-primary);
+    width: 100%;
+    display: inline-block;
+    text-decoration: none;
+}
+.option:hover {
+    background-color: var(--background-color-hover);
+}
+.option.selected {
+    background-color: var(--background-color-selected);
+}
+
+.content-right {
+    width: calc(80vw - var(--content-margin) * 2);
+    height: calc(100vh - var(--content-margin) * 2);
+    margin: var(--content-margin);
+    margin-left: 0;
+    overflow-y: scroll;
+}
+
+.menu-pane {
+    background-color: var(--content-background);
+    border-radius: 1rem;
+    box-shadow: 
+        0.2rem 0.2rem var(--content-drop-shadow),
+        0.5rem 0.5rem 1rem var(--content-drop-shadow-fade);
+}
+
+.question-list {
+    width: 100%;
+}
+.question {
+    margin: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background-color: var(--question-background);
+    box-shadow: 
+        0.2rem 0.2rem var(--question-drop-shadow),
+        0.5rem 0.5rem 1rem var(--question-drop-shadow-fade);
+}
+.question-title {
+    font-size: var(--font-size);
+    color: var(--text-color-primary);
+    margin-bottom: 0.5rem;
+}
+.question-answers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-gap: 1rem;
+}
+.question-answer {
+    font-size: var(--small-font-size);
+    color: var(--text-color-primary);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background-color: #e78f8f;
+}
+.question-answer.correct {
+    background-color: #8de28d;
+}
+
+.host-quiz {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    outline: none;
+    border: none;
+    margin: 0.5rem;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    width: calc(100% - 1rem);
+    background-color: #812d2d;
+    font-size: var(--large-font-size);
+    color: var(--text-color-reversed);
+    font-weight: bold;
+    box-shadow: 
+        0.2rem 0.2rem var(--question-drop-shadow),
+        0.5rem 0.5rem 1rem var(--question-drop-shadow-fade);
+}
+.host-quiz:hover {
+    background-color: #692424;
+}
+.host-quiz:active {
+    background-color: #4c1c1c;
+}
+
+.title {
+    font-size: 3rem;
+    font-weight: bold;
+    background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    position: absolute;
+    top: 0.5rem;
+}
+.title::after {
+    content: 'QUIZZES';
+    text-shadow: 
+        0.2rem 0.2rem var(--title-drop-shadow),
+        0.5rem 0.5rem 1rem var(--title-drop-shadow-fade);
+    position: absolute;
+    left: 0;
+    z-index: -1;
+}
+
+::-webkit-scrollbar {
+    width: 0.5rem;
+}
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #585858;
+    border-radius: 100vh;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: #747474;
+}
