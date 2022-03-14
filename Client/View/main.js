@@ -45,6 +45,11 @@ function hostQuiz() {
     if(!id) {
         id = "1";
     }
+
+    var currentHREF = window.location.href;
+    currentHREF = currentHREF.split('?')[0];
+    if(currentHREF.endsWith('/')) currentHREF = currentHREF.substring(0, currentHREF.length - 1);
+    window.location.href = currentHREF.split('/').slice(0, -1).join('/') + '/Host?id=' + id;
 }
 
 //Gets the value of a parameter from the URL.

@@ -124,6 +124,8 @@ body {
     font-size: var(--large-font-size);
     color: var(--text-color-reversed);
     font-weight: bold;
+    position: sticky;
+    top: 0.5rem;
     box-shadow: 
         0.2rem 0.2rem var(--question-drop-shadow),
         0.5rem 0.5rem 1rem var(--question-drop-shadow-fade);

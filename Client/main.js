@@ -36,3 +36,7 @@ wsc.onmessage = function(message) {
 function ViewQuiz(id) {
     window.location.href += `View/?id=${id}`;
 }
+
+function HostQuiz(id) {
+    window.location.href += `Host/?id=${id}`;
+}

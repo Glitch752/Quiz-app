@@ -10,13 +10,17 @@
 <body>
     <div class="title" id="rainbowText">QUIZZES</div>
     <div class="options-left menu-pane">
-        <a class="option" href="../">Find quizzes</a>
+        <a class="option selected" href="../">Find quizzes</a>
         <a class="option" href="../Create">Create a quiz</a>
-        <a class="option selected" href=".">My quizzes</a>
+        <a class="option" href="../Quizzes">My quizzes</a>
         <a class="option" href="../Join">Join quiz</a>
     </div>
-    <div class="content-right menu-pane">
-
+    <div class="content-right menu-pane" id="contentMenu">
+        <div class="game-topbar">
+            <div class="game-code">Game code: <span class="game-code-text" id="gameCode"></span></div>
+            <button class="game-button" onclick="startGame()">Start</button>
+        </div>
+        <div class="game-users" id="gameUsers"></div>
     </div>
 </body>
 </html>
