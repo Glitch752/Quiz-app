@@ -3,6 +3,7 @@ var websocket = require('ws');
 var wss = new websocket.Server({ port: 6790 });
 
 const admin = require('firebase-admin');
+const { parse } = require('dotenv');
 
 require('dotenv').config();
 
@@ -59,6 +60,13 @@ wss.on("connection", function(ws) {
                 return;
             }
 
+            if(!currentGames[gameCode].canJoin) {
+                ws.send(JSON.stringify({
+                    type: 'codeError'
+                }));
+                return;
+            }
+
             ws.send(JSON.stringify({
                 type: 'codeExists',
                 gameCode: gameCode
@@ -101,12 +109,30 @@ wss.on("connection", function(ws) {
                 serverCode += char;
             }
 
-            currentGames[serverCode] = {clients: [], quizId: id, host: {ws: ws}};
+            currentGames[serverCode] = {clients: [], quizId: id, host: {ws: ws}, canJoin: true, questionIndex: 0, questions: []};
 
             ws.send(JSON.stringify({
                 type: 'gameCode',
                 gameCode: serverCode
             }));
+        } else if (parsedData.type === "startGame") {
+            currentGames[parsedData.gameCode].canJoin = false;
+
+            var clients = currentGames[parsedData.gameCode].clients;
+            var quizId = currentGames[parsedData.gameCode].quizId;
+            var quizRef = db.ref('/questions/' + quizId);
+            quizRef.once('value', (snapshot) => {
+                var questions = snapshot.val();
+                var shuffledQuestions = shuffle(questions);
+
+                currentGames[parsedData.gameCode].questions = shuffledQuestions;
+
+                askQuestion(parsedData.gameCode);
+            }, (errorObject) => {
+                console.log('The read failed: ' + errorObject.name);
+            });
+        } else if (parsedData.type === "selectAnswer") {
+            
         }
     });
     ws.on('close', function() {
@@ -116,6 +142,45 @@ wss.on("connection", function(ws) {
         }
     });
 });
+
+function askQuestion(serverCode) {
+    var currentGame = currentGames[serverCode];
+    var question = currentGame.questions[currentGame.questionIndex];
+    var clients = currentGame.clients;
+
+    currentGame.questionIndex++;
+
+    if(currentGame.questionIndex === currentGame.questions.length) {
+        endGame(serverCode);
+        return;
+    }
+
+    //Make sure NOT to send the clients the correct answer
+    var parsedQuestion = {
+        text: question.text,
+        answers: question.answers.map(answer => {return {text: answer.text}})
+    }
+
+    clients.forEach(function(client) {
+        client.ws.send(JSON.stringify({
+            type: 'question',
+            question: parsedQuestion
+        }));
+    });
+
+    currentGame.host.ws.send(JSON.stringify({
+        type: 'question',
+        question: question
+    }));
+}
+
+function endGame(serverCode) {
+
+}
+
+function shuffle(array) {
+    return array.sort(() => Math.random());
+}
 
 function updateUsers(server, discludeUser = false) {
     var clients = server.clients;

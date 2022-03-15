@@ -8,6 +8,8 @@ wsc.onopen = function() {
 
 var currentGameCode = "";
 
+var answerSelected = false;
+
 wsc.onmessage = function(message) {
     console.log(message.data);
     var parsedData = JSON.parse(message.data);
@@ -42,6 +44,38 @@ wsc.onmessage = function(message) {
 
         gameElem.style.display = "none";
         joinCodeElem.style.display = "flex";
+    } else if(parsedData.type === 'question') {
+        var gameContainer = document.getElementById('gameContainer');
+        var questionContainer = document.getElementById('questionContainer');
+
+        gameContainer.style.display = "none";
+        questionContainer.style.display = "inline-block";
+
+        var questionText = document.getElementById('questionText');
+        questionText.innerHTML = parsedData.question.text;
+
+        var questionAnswers = document.getElementById('questionAnswers');
+        questionAnswers.innerHTML = "";
+
+        var answers = parsedData.question.answers;
+        for(var i = 0; i < answers.length; i++) {
+            questionAnswers.innerHTML += `
+                <div class="question-answer" onclick="SelectAnswer(${i})" id="answer${i}">${answers[i].text}</div>
+            `;
+        }
+    }
+}
+
+function SelectAnswer(index) {
+    if(answerSelected === false) {
+        answerSelected = index;
+        wsc.send(JSON.stringify({
+            type: 'selectAnswer',
+            index: index,
+            gameCode: currentGameCode
+        }));
+        var answerElem = document.getElementById('answer' + index);
+        answerElem.classList.add('selected');
     }
 }
 

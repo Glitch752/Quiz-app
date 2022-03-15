@@ -16,11 +16,24 @@
         <a class="option" href="../Join">Join quiz</a>
     </div>
     <div class="content-right menu-pane" id="contentMenu">
-        <div class="game-topbar">
-            <div class="game-code">Game code: <span class="game-code-text" id="gameCode"></span></div>
-            <button class="game-button" onclick="startGame()">Start</button>
+        <div class="game" id="gameContainer">
+            <div class="game-topbar">
+                <div class="game-code">Game code: <span class="game-code-text" id="gameCode"></span></div>
+                <button class="game-button" onclick="startGame()">Start</button>
+            </div>
+            <div class="game-users" id="gameUsers"></div>
         </div>
-        <div class="game-users" id="gameUsers"></div>
+        <div class="question" id="questionContainer">
+            <div class="question-topbar">
+                <div class="question-text" id="questionText"></div>
+            </div>
+            <div class="question-answer-counter">
+                <span class="question-answer-counter-text" id="questionAnswerCounterText"></span>
+                <span class="question-answer-counter-total">/<span id="questionAnswerCounterTotal"></span> answers</span>
+            </div>
+            <div class="question-answers" id="questionAnswers"></div>
+            <div class="question-time" id="questionTime" data-time="0.5"></div>
+        </div>
     </div>
 </body>
 </html>
