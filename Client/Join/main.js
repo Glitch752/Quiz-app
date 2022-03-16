@@ -9,6 +9,7 @@ wsc.onopen = function() {
 var currentGameCode = "";
 
 var answerSelected = false;
+var canAnswer = false;
 
 wsc.onmessage = function(message) {
     console.log(message.data);
@@ -41,10 +42,14 @@ wsc.onmessage = function(message) {
     } else if (parsedData.type === 'hostLeft') {
         var gameElem = document.getElementById('gameContainer');
         var joinCodeElem = document.getElementById('joinCodeContainer');
+        var questionsElement = document.getElementById('questions');
 
         gameElem.style.display = "none";
+        questionsElement.style.display = "none";
         joinCodeElem.style.display = "flex";
     } else if(parsedData.type === 'question') {
+        answerSelected = false;
+
         var gameContainer = document.getElementById('gameContainer');
         var questionContainer = document.getElementById('questionContainer');
 
@@ -63,15 +68,33 @@ wsc.onmessage = function(message) {
                 <div class="question-answer" onclick="SelectAnswer(${i})" id="answer${i}">${answers[i].text}</div>
             `;
         }
+
+        canAnswer = true;
+    } else if(parsedData.type === "questionFinished") {
+        var answers = parsedData.answers;
+
+        for(var i = 0; i < answers.length; i++) {
+            var answer = answers[i];
+            var answerElem = document.getElementById('answer' + i);
+
+            if(answer) {
+                answerElem.classList.add('correct');
+            } else {
+                answerElem.classList.add('wrong');
+            }
+        }
+
+        canAnswer = false;
     }
 }
 
 function SelectAnswer(index) {
+    if(!canAnswer) return
     if(answerSelected === false) {
         answerSelected = index;
         wsc.send(JSON.stringify({
             type: 'selectAnswer',
-            index: index,
+            answer: index,
             gameCode: currentGameCode
         }));
         var answerElem = document.getElementById('answer' + index);

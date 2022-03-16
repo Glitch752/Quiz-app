@@ -86,14 +86,14 @@ wss.on("connection", function(ws) {
                 return;
             }
             
-            currentGames[gameCode].clients.push({ws: ws, name: name});
+            currentGames[gameCode].clients.push({ws: ws, name: name, score: 0, startTimestamp: null});
 
             updateUsers(currentGames[gameCode], ws);
 
             ws.send(JSON.stringify({
                 type: 'nameSet',
                 name: name,
-                users: clients.map(function(client) {return {name: client.name, score: 0}}),
+                users: clients.map(function(client) {return {name: client.name, score: client.score}}),
                 gameCode: gameCode
             }));
         } else if(parsedData.type === "hostQuiz") {
@@ -132,7 +132,40 @@ wss.on("connection", function(ws) {
                 console.log('The read failed: ' + errorObject.name);
             });
         } else if (parsedData.type === "selectAnswer") {
-            
+            var clientIndex = currentGames[parsedData.gameCode].clients.findIndex(client => client.ws === ws);
+            var client = currentGames[parsedData.gameCode].clients[clientIndex];
+
+            currentGames[parsedData.gameCode].host.ws.send(JSON.stringify({
+                type: 'answerSelected',
+                answer: parsedData.answer,
+                questionTime: new Date().getTime() - client.startTimestamp,
+                user: clientIndex
+            }));
+        } else if (parsedData.type === "newQuestion") {
+            //Check if the client is the host
+            if(currentGames[parsedData.gameCode] !== undefined) {
+                if(currentGames[parsedData.gameCode].host.ws !== ws) {
+                    return
+                }
+                askQuestion(parsedData.gameCode);
+            }
+        } else if (parsedData.type === "updateScores") {
+            var scores = parsedData.scores;
+            var server = currentGames[parsedData.gameCode];
+
+            for(user in server.clients) {
+                server.clients[user].score = scores[user];
+            }
+        } else if (parsedData.type === "finishQuestion") {
+            var server = currentGames[parsedData.gameCode];
+            var clients = server.clients;
+
+            for(client in clients) {
+                clients[client].ws.send(JSON.stringify({
+                    type: 'questionFinished',
+                    answers: server.questions[server.questionIndex - 1].answers.map(function(question) {return question.correct})
+                }));
+            }
         }
     });
     ws.on('close', function() {
@@ -162,6 +195,7 @@ function askQuestion(serverCode) {
     }
 
     clients.forEach(function(client) {
+        client.startTimestamp = new Date().getTime();
         client.ws.send(JSON.stringify({
             type: 'question',
             question: parsedQuestion
@@ -175,7 +209,25 @@ function askQuestion(serverCode) {
 }
 
 function endGame(serverCode) {
+    var currentGame = currentGames[serverCode];
+    var clients = currentGame.clients;
+    var scores = clients.map(function(client) {
+        return {name: client.name, score: client.score};
+    });
 
+    clients.forEach(function(client) {
+        client.ws.send(JSON.stringify({
+            type: 'endGame',
+            scores: scores
+        }));
+    });
+
+    currentGame.host.ws.send(JSON.stringify({
+        type: 'endGame',
+        scores: scores
+    }));
+
+    delete currentGames[serverCode];
 }
 
 function shuffle(array) {
@@ -193,9 +245,10 @@ function updateUsers(server, discludeUser = false) {
             }));
         }
     });
+    var hostUsers = clients.map(function(client) {return {name: client.name, score: 0, answer: null}});
     server.host.ws.send(JSON.stringify({
         type: 'updateUsers',
-        users: users
+        users: hostUsers
     }));
 }
 

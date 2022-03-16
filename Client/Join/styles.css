@@ -288,7 +288,15 @@ body {
         0.3rem 0.3rem var(--quiz-drop-shadow),
         0 0 1rem var(--quiz-drop-shadow-fade);
     transform: translate(-0.2rem, -0.2rem);
-    
+}
+.question-answer.correct {
+    background-color: #6cd86c;
+}
+.question-answer.wrong {
+    background-color: #d8706c;
+}
+.question-answer.selected.wrong {
+    background-color: #d3413b;
 }
 
 
