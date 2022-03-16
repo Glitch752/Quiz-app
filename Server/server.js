@@ -153,8 +153,13 @@ wss.on("connection", function(ws) {
             var scores = parsedData.scores;
             var server = currentGames[parsedData.gameCode];
 
-            for(user in server.clients) {
-                server.clients[user].score = scores[user];
+            for(var i = 0; i < server.clients.length; i++) {
+                server.clients[i].score = scores[i];
+
+                server.clients[i].ws.send(JSON.stringify({
+                    type: 'updateScore',
+                    score: scores[i]
+                }));
             }
         } else if (parsedData.type === "finishQuestion") {
             var server = currentGames[parsedData.gameCode];
@@ -218,7 +223,8 @@ function endGame(serverCode) {
     clients.forEach(function(client) {
         client.ws.send(JSON.stringify({
             type: 'endGame',
-            scores: scores
+            scores: scores,
+            questions: currentGame.questions
         }));
     });
 

@@ -183,11 +183,14 @@ function finishQuestion() {
 
             console.log(gameUsers[i]);
 
+            var scoreIncrease = 0;
+
             if(questionAnswer.correct) {
                 var time = gameUsers[i].questionTime;
 
-                gameUsers[i].score += Math.round(100 - ((time / questionTime) * 100));
+                scoreIncrease = Math.round(100 - ((time / questionTime) * 100));
             }
+            gameUsers[i].score += scoreIncrease;
         }
     }
 

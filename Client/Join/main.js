@@ -11,8 +11,9 @@ var currentGameCode = "";
 var answerSelected = false;
 var canAnswer = false;
 
+var currentScore = 0;
+
 wsc.onmessage = function(message) {
-    console.log(message.data);
     var parsedData = JSON.parse(message.data);
     if (parsedData.type === 'codeExists') {
         var gameCodeElem = document.getElementById('joinCodeContainer');
@@ -52,7 +53,9 @@ wsc.onmessage = function(message) {
 
         var gameContainer = document.getElementById('gameContainer');
         var questionContainer = document.getElementById('questionContainer');
+        var scoreContainer = document.getElementById('scoreContainer');
 
+        scoreContainer.style.display = "inline-block";
         gameContainer.style.display = "none";
         questionContainer.style.display = "inline-block";
 
@@ -85,6 +88,40 @@ wsc.onmessage = function(message) {
         }
 
         canAnswer = false;
+    } else if(parsedData.type === "updateScore") {
+        currentScore = parsedData.score;
+        
+        var scoreElem = document.getElementById('score');
+        scoreElem.innerHTML = currentScore;
+    } else if(parsedData.type === "endGame") {
+        var scoreContainer = document.getElementById('scoreContainer');
+        var questionContainer = document.getElementById('questionContainer');
+        var endGameContainer = document.getElementById('endGameContainer');
+
+        scoreContainer.style.display = "none";
+        questionContainer.style.display = "none";
+        endGameContainer.style.display = "inline-block";
+
+        var endGamePoints = document.getElementById('endGamePoints');
+        endGamePoints.innerHTML = currentScore;
+
+        var endGameAnswers = document.getElementById('endGameAnswers');
+
+        endGameAnswers.innerHTML = "";
+
+        var questions = parsedData.questions;
+
+        for(var i = 0; i < questions.length; i++) {
+            var question = questions[i];
+            endGameAnswers.innerHTML += `
+                <div class="end-game-question">
+                    <div class="end-game-question-title">${question.text}</div>
+                    <div class="end-game-question-answers">
+                        ${question.answers.map(answer => `<div class="end-game-question-answer ${answer.correct ? "correct" : ""}">${answer.text}</div>`).join('')}
+                    </div>
+                </div>
+            `;
+        }
     }
 }
 
