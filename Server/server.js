@@ -171,6 +171,45 @@ wss.on("connection", function(ws) {
                     answers: server.questions[server.questionIndex - 1].answers.map(function(question) {return question.correct})
                 }));
             }
+        } else if(parsedData.type === "createQuiz") {
+            
+            var name = parsedData.name;
+            var public = parsedData.public;
+            var description = parsedData.description;
+
+            description = description.replace(/\n/g, '');
+
+            var quizRef = db.ref('/quizzes');
+
+            quizRef.once('value', (snapshot) => {
+                var quizzes = snapshot.val();
+                var id = Object.keys(quizzes).length;
+
+                var newQuizRef = quizRef.child(id);
+
+                newQuizRef.set({
+                    id: id + 1,
+                    name: name,
+                    description: description,
+                    public: public
+                });
+    
+                ws.send(JSON.stringify({
+                    type: 'quizCreated',
+                    name: name,
+                    description: description,
+                    public: public,
+                    id: id + 1
+                }));
+            }, (errorObject) => {
+                console.log('The read failed: ' + errorObject.name);
+            });
+        } else if(parsedData.type === "saveQuiz") {
+            var quizId = parsedData.quizId;
+            var questions = parsedData.questions;
+
+            var quizRef = db.ref('/questions/' + quizId);
+            quizRef.set(questions);
         }
     });
     ws.on('close', function() {
@@ -188,7 +227,7 @@ function askQuestion(serverCode) {
 
     currentGame.questionIndex++;
 
-    if(currentGame.questionIndex === currentGame.questions.length) {
+    if(currentGame.questionIndex > currentGame.questions.length) {
         endGame(serverCode);
         return;
     }

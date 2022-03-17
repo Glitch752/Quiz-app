@@ -16,7 +16,26 @@
         <a class="option" href="../Join/">Join quiz</a>
     </div>
     <div class="content-right menu-pane">
-
+        <div class="create-quiz" id="createQuizContainer">
+            <div class="create-quiz-text">Create quiz</div>
+            <input type="text" class="create-quiz-input" id="createQuizName" placeholder="Quiz name..." maxlength="20">
+            <br>
+            <input type="checkbox" class="create-quiz-checkbox" name="quizIsPublic" id="quizIsPublic" checked>
+            <label for="quizIsPublic">is public</label>
+            <br>
+            <textarea name="quizDesciption" id="createQuizDescription" cols="30" rows="5" maxlength="150" class="create-quiz-description" placeholder="Description..."></textarea>
+            <br>
+            <button class="create-quiz-button" id="createQuizButton" onclick="createQuiz()">Create</button>
+        </div>
+        <div class="quiz-creation" id="quizCreationContainer">
+            <div class="quiz-creation-top">
+                <span class="quiz-creation-top-name" id="quizCreationTopName"></span>
+                <span class="quiz-creation-top-description" id="quizCreationTopDescription"></span>
+            </div>
+            <div class="quiz-creation-questions" id="quizCreationQuestions">
+            </div>
+            <div class="quiz-creation-question-add" onclick="addQuestion()"><span>+</span></div>
+        </div>
     </div>
 </body>
 </html>
