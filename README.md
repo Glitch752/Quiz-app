@@ -28,4 +28,7 @@ It also allows you to create your own quizzes,
 and view or take other people's quizzes.
 ![view-quiz](https://github.com/Glitch752/Quiz-app/blob/master/Images/ViewQuiz.jpg?raw=true)
 
-I might add more game modes to this project eventually, but it was always intended to be a simple project to learn about firebase.
+I might add more game modes to this project eventually, but it's mostly intended to be a project to learn about firebase.
+
+## Contributing
+If you want to see any features added to this application, you can always submit an issue or pull request.
