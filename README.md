@@ -1,6 +1,7 @@
 # Quiz-app
 
-Very simple quiz-taking application like quizlet or kahoot, using firebase to store data in the cloud.
+This is a simple quiz application I made using firebase to store data in the cloud.
+In the future, I may turn this into something like [Gimkit](https://www.gimkit.com/) with games based around solving questions, but for now it's just simple quizzes.
 
 ## Screenshots
 
